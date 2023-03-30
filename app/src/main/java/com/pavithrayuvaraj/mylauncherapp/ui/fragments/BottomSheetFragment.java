@@ -6,28 +6,18 @@ import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
-import androidx.compose.ui.graphics.Color;
-import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.pavithrayuvaraj.mylauncherapp.R;
 import com.pavithrayuvaraj.mylauncherapp.adapters.AppListAdapter;
 import com.pavithrayuvaraj.mylauncherapp.data.AppInfo;
 import com.pavithrayuvaraj.mylauncherapp.databinding.BottomSheetLayoutBinding;
@@ -53,12 +43,11 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Re
     private BottomSheetLayoutBinding mFragmentBinding;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.bottom_sheet_layout, container, false);
+        mFragmentBinding = BottomSheetLayoutBinding.inflate(inflater, container, false);
 
-        mFragmentBinding.coordinatorLayout.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mDenyListViewModel = new ViewModelProvider(this).get(DenyListViewModel.class);
 
         initViews();
