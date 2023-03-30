@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+   <data>
+      <variable
+          name="date"
+          type="com.pavithrayuvaraj.mylauncherapp.ui.fragments.HomeFragment" />
+   </data>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.HomeFragment"
+    android:id="@+id/frame_layout">
+
+   <RelativeLayout
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content">
+      <DigitalClock
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:id="@+id/digital_clock"
+          android:textSize="40sp"
+          android:layout_marginTop="40dp"
+          android:layout_marginStart="40dp"
+          android:theme="@style/Theme.MyLauncherApp.DateTime" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:id="@+id/current_date"
+          android:theme="@style/Theme.MyLauncherApp.DateTime"
+          android:layout_marginTop="30dp"
+          android:layout_marginStart="40dp"
+          android:layout_below="@id/digital_clock"/>
+   </RelativeLayout>
+
+</FrameLayout>
+</layout>
