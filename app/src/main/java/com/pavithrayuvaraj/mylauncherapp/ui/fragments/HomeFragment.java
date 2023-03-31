@@ -33,6 +33,21 @@ public class HomeFragment extends Fragment{
 
         homeFragment =  inflater.inflate(R.layout.fragment_home, container, false);
         setCurrentDate();
+        setGestureDetector();
+        setTouchListener();
+        return homeFragment;
+    }
+
+    private void setTouchListener() {
+        homeFragment.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mDetector.onTouchEvent(event);
+            }
+        });
+    }
+
+    private void setGestureDetector(){
         mDetector = new GestureDetector(getActivity(), new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDown(MotionEvent e) {
@@ -43,8 +58,8 @@ public class HomeFragment extends Fragment{
             public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 
                 Log.d(TAG, "onFling SimpleOnGestureListener: ");
-               // NavHostFragment navHostFragment = (NavHostFragment) getParentFragmentManager().findFragmentById(R.id.nav_host_fragment);
-             //   NavController navController = navHostFragment.getNavController();
+                // NavHostFragment navHostFragment = (NavHostFragment) getParentFragmentManager().findFragmentById(R.id.nav_host_fragment);
+                //   NavController navController = navHostFragment.getNavController();
                 if(Navigation.findNavController(homeFragment).getCurrentDestination() != null
                         && Navigation.findNavController(homeFragment).getCurrentDestination().getId() == R.id.homeFragment) {
                     NavDirections action = HomeFragmentDirections.actionHomeFragmentToBottomSheetFragment();
@@ -55,16 +70,7 @@ public class HomeFragment extends Fragment{
                 return super.onFling(e1, e2, velocityX, velocityY);
             }
         });
-
-        homeFragment.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return mDetector.onTouchEvent(event);
-            }
-        });
-        return homeFragment;
     }
-
 
     public void setCurrentDate() {
 

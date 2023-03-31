@@ -21,7 +21,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.pavithrayuvaraj.mylauncherapp.adapters.AppListAdapter;
 import com.pavithrayuvaraj.mylauncherapp.data.AppInfo;
 import com.pavithrayuvaraj.mylauncherapp.databinding.BottomSheetLayoutBinding;
-import com.pavithrayuvaraj.mylauncherapp.interfaces.RecyclerViewItemClickListener;
 import com.pavithrayuvaraj.mylauncherapp.viewmodel.DenyListViewModel;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ import java.util.List;
 /**
  * Class displays the list of apps installed in the device
  */
-public class BottomSheetFragment extends BottomSheetDialogFragment implements RecyclerViewItemClickListener {
+public class BottomSheetFragment extends BottomSheetDialogFragment {
 
 
     public static final String TAG = BottomSheetFragment.class.getName();
@@ -79,7 +78,7 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Re
      */
     public void configureRecyclerView() {
         RecyclerView recyclerView = mFragmentBinding.appList;
-        mAppListAdapter = new AppListAdapter(new AppListAdapter.AppInfoDiff(), getContext(), this);
+        mAppListAdapter = new AppListAdapter(new AppListAdapter.AppInfoDiff(), getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(mAppListAdapter);
@@ -172,17 +171,5 @@ public class BottomSheetFragment extends BottomSheetDialogFragment implements Re
         } else {
             mAppListAdapter.submitList(mFilteredList);
         }
-    }
-
-    /**
-     * method to open the app being click on
-     * @param position  list position
-     */
-    @Override
-    public void onItemClick(int position) {
-        Log.d(TAG, "onItemClick: position " + position);
-        Intent launcherIntent = getContext().getPackageManager().getLaunchIntentForPackage(mAppList.get(position).getPackageName());
-        startActivity(launcherIntent);
-        Toast.makeText(getContext(), mAppList.get(position).getLabel(), Toast.LENGTH_LONG).show();
     }
 }
