@@ -1,6 +1,5 @@
 package com.pavithrayuvaraj.mylauncherapp.ui.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
