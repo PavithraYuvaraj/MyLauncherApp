@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 
 import com.pavithrayuvaraj.mylauncherapp.data.AppInfo;
-import com.pavithrayuvaraj.mylauncherapp.interfaces.RecyclerViewItemClickListener;
 
 /**
  * adapter class
@@ -17,12 +16,10 @@ import com.pavithrayuvaraj.mylauncherapp.interfaces.RecyclerViewItemClickListene
 public class AppListAdapter extends ListAdapter<AppInfo, AppsViewHolder> {
     public static final String TAG = AppListAdapter.class.getName();
     private Context mContext;
-    private RecyclerViewItemClickListener mRecyclerViewItemClickListener;
 
-    public AppListAdapter(@NonNull DiffUtil.ItemCallback<AppInfo> diffCallback, Context context, RecyclerViewItemClickListener recyclerViewItemClickListener) {
+    public AppListAdapter(@NonNull DiffUtil.ItemCallback<AppInfo> diffCallback, Context context) {
         super(diffCallback);
         mContext = context;
-        mRecyclerViewItemClickListener = recyclerViewItemClickListener;
     }
 
     @NonNull
@@ -37,7 +34,7 @@ public class AppListAdapter extends ListAdapter<AppInfo, AppsViewHolder> {
     public void onBindViewHolder(@NonNull AppsViewHolder holder, int position) {
         AppInfo appInfo = getItem(position);
         Log.d(TAG, "onBindViewHolder: " + position);
-        holder.bind(appInfo, mContext, mRecyclerViewItemClickListener, position);
+        holder.bind(appInfo, mContext, position);
     }
 
     public static class AppInfoDiff extends DiffUtil.ItemCallback<AppInfo> {

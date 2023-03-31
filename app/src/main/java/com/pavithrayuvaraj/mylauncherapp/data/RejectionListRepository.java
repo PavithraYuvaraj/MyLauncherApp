@@ -1,10 +1,9 @@
 package com.pavithrayuvaraj.mylauncherapp.data;
 
-import android.content.Context;
-import android.os.Build;
+import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.pavithrayuvaraj.mylauncherapp.interfaces.ClientUsageService;
@@ -34,27 +33,29 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RejectionListRepository {
     public static final String TAG = RejectionListRepository.class.getName();
     public static RejectionListRepository mRejectionListRepository;
-    private Context mContext;
+    private final Application mApplication;
 
-    private RejectionListRepository(Context context) {
-        mContext = context;
+    private RejectionListRepository(Application application) {
+        mApplication = application;
     }
-    public static RejectionListRepository getInstance(Context context) {
+    public static RejectionListRepository getInstance(Application application) {
         if(mRejectionListRepository == null) {
-            mRejectionListRepository = new RejectionListRepository(context);
+            mRejectionListRepository = new RejectionListRepository(application);
         }
         return mRejectionListRepository;
     }
 
-    private ClientUsageService mClientUsageService;
-
+    /**
+     * Method to get the list of denied apps
+     * @return  List of strings
+     */
     public MutableLiveData<List<String>> getDenyList() {
         OkHttpClient okHttpClient = new OkHttpClient()
                 .newBuilder()
-                .cache(new Cache(mContext.getCacheDir(), 10 * 1024 *1024))
+                .cache(new Cache(mApplication.getCacheDir(), 10 * 1024 *1024))
                 .addInterceptor(chain -> {
                     Request request = chain.request();
-                    if(NetworkUtils.isInternetConnected(mContext)) {
+                    if(NetworkUtils.isInternetConnected(mApplication)) {
                         request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
                     } else {
                         request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
@@ -69,14 +70,14 @@ public class RejectionListRepository {
                 .client(okHttpClient)
                 .build();
 
-        mClientUsageService = retrofit.create(ClientUsageService.class);
+        ClientUsageService clientUsageService = retrofit.create(ClientUsageService.class);
 
         MutableLiveData<List<String>> appInfoMutableLiveData = new MutableLiveData<>();
 
-        Call<ResponseBody> responseBodyCall = mClientUsageService.getRecord();
+        Call<ResponseBody> responseBodyCall = clientUsageService.getRecord();
         responseBodyCall.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
                 Log.d(TAG, "onResponse: " + response.code());
                 if(response.code() == 200) {
                     if(response.body() != null) {
@@ -88,7 +89,7 @@ public class RejectionListRepository {
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                 Log.d(TAG, "onFailure: " + t.toString());
                 appInfoMutableLiveData.setValue(null);
             }

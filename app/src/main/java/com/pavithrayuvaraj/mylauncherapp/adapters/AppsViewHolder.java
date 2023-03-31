@@ -17,11 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.pavithrayuvaraj.mylauncherapp.R;
 import com.pavithrayuvaraj.mylauncherapp.data.AppInfo;
-import com.pavithrayuvaraj.mylauncherapp.interfaces.RecyclerViewItemClickListener;
 
 public class AppsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public static final String TAG = AppsViewHolder.class.getName();
-    public RecyclerViewItemClickListener mRecyclerViewItemClickListener;
     public int position;
     public ImageView imageView;
     public TextView textView;
@@ -36,9 +34,7 @@ public class AppsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     public void bind(AppInfo appInfo,
                      Context context,
-                     RecyclerViewItemClickListener recyclerViewItemClickListener,
                      int position) {
-        mRecyclerViewItemClickListener = recyclerViewItemClickListener;
 
         this.position = position;
         mAppInfo = appInfo;
@@ -49,7 +45,6 @@ public class AppsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         if(!mAppInfo.isAllowed()) {
             Log.d(TAG, "bind: app not allowed " + mAppInfo.getLabel());
             itemView.setClickable(false);
-            //itemView.setBackgroundColor(Color.parseColor("#66000000"));
             textView.setTextColor(Color.parseColor("#808080"));
         } else {
             itemView.setClickable(true);
